@@ -1,0 +1,5496 @@
+---
+swagger: "2.0"
+info:
+  description: The API Description with markdown
+  version: 1.0.0
+  title: Debit Card Transaction API
+host: virtserver.swaggerhub.com
+basePath: /itmiller/webhooks/1.0.0
+tags:
+- name: Webhooks
+  description: Webhooks provide a way for you to subscribe to events from this API
+- name: Transactions
+  description: Management of Debit Card Transactions
+schemes:
+- https
+consumes:
+- application/json
+produces:
+- application/json
+paths:
+  /webhooks/available-events:
+    get:
+      tags:
+      - Webhooks
+      summary: List available events for subscription
+      parameters:
+      - name: Authorization
+        in: header
+        description: Bearer <Token>
+        required: true
+        type: string
+        format: guid
+      responses:
+        200:
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/EventName'
+          headers:
+            crx-api-tracking-id:
+              type: string
+              format: guid
+              description: Tracking Id to assist in tracking responses from the API. Can be used to assist in troubleshooting issues.
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+          headers:
+            crx-api-tracking-id:
+              type: string
+              format: guid
+              description: Tracking Id to assist in tracking responses from the API. Can be used to assist in troubleshooting issues.
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Error'
+          headers:
+            crx-api-tracking-id:
+              type: string
+              format: guid
+              description: Tracking Id to assist in tracking responses from the API. Can be used to assist in troubleshooting issues.
+      security:
+      - OAuth2:
+        - debit-card-transaction
+        - webhooks
+        - read
+      x-code-samples:
+      - lang: PHP
+        source: |
+          $attachments = $client->attachments()->search([
+              'filter' => 'relatedType:customer',
+          ]);
+  /webhooks:
+    get:
+      tags:
+      - Webhooks
+      summary: Get all webhooks
+      parameters:
+      - name: Authorization
+        in: header
+        description: Bearer <Token>
+        required: true
+        type: string
+        format: guid
+      responses:
+        200:
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Webhook'
+          headers:
+            crx-api-tracking-id:
+              type: string
+              format: guid
+              description: Tracking Id to assist in tracking responses from the API. Can be used to assist in troubleshooting issues.
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+          headers:
+            crx-api-tracking-id:
+              type: string
+              format: guid
+              description: Tracking Id to assist in tracking responses from the API. Can be used to assist in troubleshooting issues.
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Error'
+          headers:
+            crx-api-tracking-id:
+              type: string
+              format: guid
+              description: Tracking Id to assist in tracking responses from the API. Can be used to assist in troubleshooting issues.
+      security:
+      - OAuth2:
+        - debit-card-transaction
+        - webhooks
+        - read
+      x-examples: fooo
+    post:
+      tags:
+      - Webhooks
+      summary: Subscribe to an event
+      parameters:
+      - name: Authorization
+        in: header
+        description: Bearer <Token>
+        required: true
+        type: string
+        format: guid
+      - in: body
+        name: webhook
+        description: The webhook describing the events that should be delivered to the supplied targets
+        required: false
+        schema:
+          $ref: '#/definitions/Webhook'
+      responses:
+        201:
+          description: Created
+          schema:
+            $ref: '#/definitions/Webhook'
+          headers:
+            crx-api-tracking-id:
+              type: string
+              format: guid
+              description: Tracking Id to assist in tracking responses from the API. Can be used to assist in troubleshooting issues.
+            location:
+              type: string
+              description: Contains a link to the newly created webhook
+        400:
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error'
+          headers:
+            crx-api-tracking-id:
+              type: string
+              format: guid
+              description: Tracking Id to assist in tracking responses from the API. Can be used to assist in troubleshooting issues.
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+          headers:
+            crx-api-tracking-id:
+              type: string
+              format: guid
+              description: Tracking Id to assist in tracking responses from the API. Can be used to assist in troubleshooting issues.
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Error'
+          headers:
+            crx-api-tracking-id:
+              type: string
+              format: guid
+              description: Tracking Id to assist in tracking responses from the API. Can be used to assist in troubleshooting issues.
+      security:
+      - OAuth2:
+        - debit-card-transaction
+        - webhooks
+        - create
+  /webhooks/{uid}:
+    get:
+      tags:
+      - Webhooks
+      summary: Retrieve information about a specific webhook
+      parameters:
+      - name: uid
+        in: path
+        description: Unique Identifier for a Webhook
+        required: true
+        type: string
+        format: guid
+      - name: Authorization
+        in: header
+        description: Bearer <Token>
+        required: true
+        type: string
+        format: guid
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/Webhook'
+          headers:
+            crx-api-tracking-id:
+              type: string
+              format: guid
+              description: Tracking Id to assist in tracking responses from the API. Can be used to assist in troubleshooting issues.
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+          headers:
+            crx-api-tracking-id:
+              type: string
+              format: guid
+              description: Tracking Id to assist in tracking responses from the API. Can be used to assist in troubleshooting issues.
+        403:
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+          headers:
+            crx-api-tracking-id:
+              type: string
+              format: guid
+              description: Tracking Id to assist in tracking responses from the API. Can be used to assist in troubleshooting issues.
+        404:
+          description: The specified resource was not found
+          schema:
+            $ref: '#/definitions/Error'
+          headers:
+            crx-api-tracking-id:
+              type: string
+              format: guid
+              description: Tracking Id to assist in tracking responses from the API. Can be used to assist in troubleshooting issues.
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Error'
+          headers:
+            crx-api-tracking-id:
+              type: string
+              format: guid
+              description: Tracking Id to assist in tracking responses from the API. Can be used to assist in troubleshooting issues.
+      security:
+      - OAuth2:
+        - debit-card-transaction
+        - webhooks
+        - read
+    put:
+      tags:
+      - Webhooks
+      summary: Update a webhook
+      parameters:
+      - name: uid
+        in: path
+        description: Unique Identifier for a Webhook
+        required: true
+        type: string
+        format: guid
+      - name: Authorization
+        in: header
+        description: Bearer <Token>
+        required: true
+        type: string
+        format: guid
+      - in: body
+        name: webhook
+        description: The webhook describing the events that should be delivered to supplied targets
+        required: false
+        schema:
+          $ref: '#/definitions/UpdateWebhook'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/Webhook'
+          headers:
+            crx-api-tracking-id:
+              type: string
+              format: guid
+              description: Tracking Id to assist in tracking responses from the API. Can be used to assist in troubleshooting issues.
+        400:
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error'
+          headers:
+            crx-api-tracking-id:
+              type: string
+              format: guid
+              description: Tracking Id to assist in tracking responses from the API. Can be used to assist in troubleshooting issues.
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+          headers:
+            crx-api-tracking-id:
+              type: string
+              format: guid
+              description: Tracking Id to assist in tracking responses from the API. Can be used to assist in troubleshooting issues.
+        403:
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+          headers:
+            crx-api-tracking-id:
+              type: string
+              format: guid
+              description: Tracking Id to assist in tracking responses from the API. Can be used to assist in troubleshooting issues.
+        404:
+          description: The specified resource was not found
+          schema:
+            $ref: '#/definitions/Error'
+          headers:
+            crx-api-tracking-id:
+              type: string
+              format: guid
+              description: Tracking Id to assist in tracking responses from the API. Can be used to assist in troubleshooting issues.
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Error'
+          headers:
+            crx-api-tracking-id:
+              type: string
+              format: guid
+              description: Tracking Id to assist in tracking responses from the API. Can be used to assist in troubleshooting issues.
+      security:
+      - OAuth2:
+        - debit-card-transaction
+        - webhooks
+        - update
+    delete:
+      tags:
+      - Webhooks
+      summary: Unsubscribe from an event
+      parameters:
+      - name: uid
+        in: path
+        description: Unique Identifier for a Webhook
+        required: true
+        type: string
+        format: guid
+      - name: Authorization
+        in: header
+        description: Bearer <Token>
+        required: true
+        type: string
+        format: guid
+      responses:
+        204:
+          description: Successfully unsubscribed from the webhook
+          headers:
+            crx-api-tracking-id:
+              type: string
+              format: guid
+              description: Tracking Id to assist in tracking responses from the API. Can be used to assist in troubleshooting issues.
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+          headers:
+            crx-api-tracking-id:
+              type: string
+              format: guid
+              description: Tracking Id to assist in tracking responses from the API. Can be used to assist in troubleshooting issues.
+        403:
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+          headers:
+            crx-api-tracking-id:
+              type: string
+              format: guid
+              description: Tracking Id to assist in tracking responses from the API. Can be used to assist in troubleshooting issues.
+        404:
+          description: The specified resource was not found
+          schema:
+            $ref: '#/definitions/Error'
+          headers:
+            crx-api-tracking-id:
+              type: string
+              format: guid
+              description: Tracking Id to assist in tracking responses from the API. Can be used to assist in troubleshooting issues.
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Error'
+          headers:
+            crx-api-tracking-id:
+              type: string
+              format: guid
+              description: Tracking Id to assist in tracking responses from the API. Can be used to assist in troubleshooting issues.
+      security:
+      - OAuth2:
+        - debit-card-transaction
+        - webhooks
+        - delete
+  /webhooks/{uid}/activate:
+    post:
+      tags:
+      - Webhooks
+      summary: Activate an inactive Webhook and indicate how to handle any events that failed to deliver
+      parameters:
+      - name: uid
+        in: path
+        description: Unique Identifier for a Webhook
+        required: true
+        type: string
+        format: guid
+      - name: Authorization
+        in: header
+        description: Bearer <Token>
+        required: true
+        type: string
+        format: guid
+      - name: missedEvents
+        in: query
+        description: |
+          Options:
+            * `response` - Return failed events in the response
+            * `re-deliver` - Attempt to re-deliver failed events
+            * `ignore` - Ignore failed events
+        required: false
+        type: string
+        enum:
+        - response
+        - re-deliver
+        - ignore
+      responses:
+        200:
+          description: Successfully activated the webhook and includes failed Events in the response
+          schema:
+            $ref: '#/definitions/Event'
+          headers:
+            crx-api-tracking-id:
+              type: string
+              format: guid
+              description: Tracking Id to assist in tracking responses from the API. Can be used to assist in troubleshooting issues.
+        204:
+          description: Successfully activated the webhook, but with no failed included in the response Events in the response
+          headers:
+            crx-api-tracking-id:
+              type: string
+              format: guid
+              description: Tracking Id to assist in tracking responses from the API. Can be used to assist in troubleshooting issues.
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+          headers:
+            crx-api-tracking-id:
+              type: string
+              format: guid
+              description: Tracking Id to assist in tracking responses from the API. Can be used to assist in troubleshooting issues.
+        403:
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+          headers:
+            crx-api-tracking-id:
+              type: string
+              format: guid
+              description: Tracking Id to assist in tracking responses from the API. Can be used to assist in troubleshooting issues.
+        404:
+          description: The specified resource was not found
+          schema:
+            $ref: '#/definitions/Error'
+          headers:
+            crx-api-tracking-id:
+              type: string
+              format: guid
+              description: Tracking Id to assist in tracking responses from the API. Can be used to assist in troubleshooting issues.
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Error'
+          headers:
+            crx-api-tracking-id:
+              type: string
+              format: guid
+              description: Tracking Id to assist in tracking responses from the API. Can be used to assist in troubleshooting issues.
+      security:
+      - OAuth2:
+        - debit-card-transaction
+        - webhooks
+        - update
+  /webhooks/{uid}/deactivate:
+    post:
+      tags:
+      - Webhooks
+      summary: De-activate an active Webhook.  This is reserved for internal use
+      parameters:
+      - name: uid
+        in: path
+        description: Unique Identifier for a Webhook
+        required: true
+        type: string
+        format: guid
+      - name: Authorization
+        in: header
+        description: Bearer <Token>
+        required: true
+        type: string
+        format: guid
+      responses:
+        204:
+          description: Successfully de-activated the webhook
+          headers:
+            crx-api-tracking-id:
+              type: string
+              format: guid
+              description: Tracking Id to assist in tracking responses from the API. Can be used to assist in troubleshooting issues.
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+          headers:
+            crx-api-tracking-id:
+              type: string
+              format: guid
+              description: Tracking Id to assist in tracking responses from the API. Can be used to assist in troubleshooting issues.
+        403:
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+          headers:
+            crx-api-tracking-id:
+              type: string
+              format: guid
+              description: Tracking Id to assist in tracking responses from the API. Can be used to assist in troubleshooting issues.
+        404:
+          description: The specified resource was not found
+          schema:
+            $ref: '#/definitions/Error'
+          headers:
+            crx-api-tracking-id:
+              type: string
+              format: guid
+              description: Tracking Id to assist in tracking responses from the API. Can be used to assist in troubleshooting issues.
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Error'
+          headers:
+            crx-api-tracking-id:
+              type: string
+              format: guid
+              description: Tracking Id to assist in tracking responses from the API. Can be used to assist in troubleshooting issues.
+      security:
+      - OAuth2:
+        - debit-card-transaction
+        - webhooks
+        - update
+        - internal
+  /feeds/{feedId}/batches:
+    post:
+      tags:
+      - Transactions
+      summary: Submit a batch of Debit Card Transactions
+      parameters:
+      - name: feedId
+        in: path
+        description: Id of the feed to submit a batch of Transactions for
+        required: true
+        type: string
+        maximum: 32
+        minimum: 1
+      - name: Authorization
+        in: header
+        description: Bearer <Token>
+        required: true
+        type: string
+        format: guid
+      - in: body
+        name: batch
+        description: The batch containing debit card Transactions
+        required: false
+        schema:
+          $ref: '#/definitions/Batch'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/BatchResponse'
+          headers:
+            crx-api-tracking-id:
+              type: string
+              format: guid
+              description: Tracking Id to assist in tracking responses from the API. Can be used to assist in troubleshooting issues.
+        400:
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error'
+          headers:
+            crx-api-tracking-id:
+              type: string
+              format: guid
+              description: Tracking Id to assist in tracking responses from the API. Can be used to assist in troubleshooting issues.
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+          headers:
+            crx-api-tracking-id:
+              type: string
+              format: guid
+              description: Tracking Id to assist in tracking responses from the API. Can be used to assist in troubleshooting issues.
+        500:
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Error'
+          headers:
+            crx-api-tracking-id:
+              type: string
+              format: guid
+              description: Tracking Id to assist in tracking responses from the API. Can be used to assist in troubleshooting issues.
+      security:
+      - OAuth2:
+        - debit-card-transaction
+        - transactions
+        - create
+        - vendor
+securityDefinitions:
+  OAuth2:
+    type: oauth2
+    tokenUrl: https://auth.ldmhealthcare.com/api/oauth/token
+    flow: application
+    scopes:
+      read: Grants read access
+      create: Grants write access
+      update: Grants update access
+      delete: Grants delete access
+      vendor: Grants private access, reserved for third-party vendors
+      internal: Grants private access, reserved for CRx internal applications
+      webhooks: Grants access to webhooks endpoints
+      transactions: Grants access to transaction endpoints
+      debit-card-transaction: Grants access to the Debit Card Transaction API
+definitions:
+  Error:
+    type: object
+    required:
+    - code
+    - message
+    properties:
+      code:
+        type: string
+        example: ERROR_CODE_HTTP_STATUS
+        description: A textual error code
+      message:
+        type: string
+        example: The request is invalid.
+        description: Description of the error
+  Event:
+    type: object
+    properties:
+      uid:
+        type: string
+        format: guid
+        example: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        description: The external identifier for the event
+        readOnly: true
+      name:
+        type: string
+        example: Transaction Added
+        description: The name of the event type
+        readOnly: true
+        maxLength: 100
+      type:
+        type: string
+        example: transaction.added
+        description: The type of the event
+        readOnly: true
+        maxLength: 100
+      transaction:
+        $ref: '#/definitions/EventTransaction'
+      createdDate:
+        type: string
+        format: date-time
+        example: 2018-01-15T15:53:00
+        description: Date time when the Event was created in ISO 8601 Notation
+        readOnly: true
+      sequenceNumber:
+        type: integer
+        format: int64
+        example: 100
+        description: The ordinal of the event being delivered to the Client for the specific event type and target
+        readOnly: true
+      signature:
+        type: string
+        example: JWT signature
+        description: JWT Token containing information about the event including a unique hash for this delivery attempt.  This can be used to ensure that the event came from the issuer and has not been tampered with in transit. The token is signed with the Shared Key generated when webhook is created
+    example:
+      uid: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+      sequenceNumber: 100
+      createdDate: 2018-01-15T15:53:00
+      signature: JWT signature
+      name: Transaction Added
+      type: transaction.added
+      transaction:
+        indicator: Debit
+        systemTraceAuditNumber: systemTraceAuditNumber
+        partnerReferenceId: partnerReferenceId
+        externalCode: "40"
+        reversalTargetId: reversalTargetId
+        transmissionTimestamp: 2018-01-15T15:53:00
+        description: 40 = Signature (POS) Purchase
+        pinExist: false
+        source: source
+        retrievalReferenceNumber: retrievalReferenceNumber
+        responseCode: responseCode
+        availableBalance: 206.12
+        uid: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        lifeCycleId: lifeCycleId
+        cardBalance: 206.12
+        outstandingAuthorizationAmount: 0.0
+        timestamp: 2018-01-15T15:53:00
+        amount: 4.95
+        product:
+          name: CRX_Enbrel_ChargeCardMC
+          partnerId: partnerId
+        merchant:
+          country: country
+          city: city
+          name: name
+          id: id
+          categoryCode: categoryCode
+          state: state
+        terminal:
+          code: code
+          id: id
+        typeCode: "0100"
+        expirationDateEntered: "112020"
+        requestedAmount: 4.95
+        partnerId: "1053450477"
+        internalCode: "2040"
+        account:
+          cardNumberLast4: "7187"
+          accountNumber: "2000000001414867"
+          memberId: memberId
+          status: status
+          expirationDate: "112020"
+        status: Transaction posted successfully
+  Webhook:
+    type: object
+    required:
+    - events
+    - targets
+    properties:
+      uid:
+        type: string
+        format: guid
+        example: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        readOnly: true
+      events:
+        type: array
+        items:
+          $ref: '#/definitions/EventName'
+      targets:
+        type: array
+        items:
+          $ref: '#/definitions/Target'
+      maximumRetries:
+        type: integer
+        example: 5
+        description: 'The maximum number of retries before an event will no longer
+          by sent.  There are 8 levels of retrying with larger increases in time between
+          retries:  500ms, 1s, 30s, 1m, 5m, 15m, 30m, 1h'
+        minimum: 0
+        maximum: 8
+      isActive:
+        type: boolean
+        readOnly: true
+      sharedKey:
+        type: string
+        example: Y3J4LXNoYXJlZC1rZXk=
+        description: Shared Key used to sign the Delivery Attempts
+        readOnly: true
+        maxLength: 64
+    example:
+      sharedKey: Y3J4LXNoYXJlZC1rZXk=
+      uid: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+      maximumRetries: 5
+      isActive: true
+      targets:
+      - securityContext:
+          tokenLocation: header
+          parameterName: crx-api-key
+          type: api-key
+          token: crx-security-token
+        url: https://my.receiving.api.com/recieve
+      - securityContext:
+          tokenLocation: header
+          parameterName: crx-api-key
+          type: api-key
+          token: crx-security-token
+        url: https://my.receiving.api.com/recieve
+      events:
+      - name: transaction.added
+      - name: transaction.added
+  UpdateWebhook:
+    type: object
+    properties:
+      events:
+        type: array
+        items:
+          $ref: '#/definitions/EventName'
+      targets:
+        type: array
+        items:
+          $ref: '#/definitions/Target'
+      maximumRetries:
+        type: integer
+        example: 5
+        description: 'The maximum number of retries before an event will no longer
+          by sent.  There are 8 levels of retrying with larger increases in time between
+          retries:  500ms, 1s, 30s, 1m, 5m, 15m, 30m, 1h'
+        minimum: 0
+        maximum: 8
+    example:
+      maximumRetries: 5
+      targets:
+      - securityContext:
+          tokenLocation: header
+          parameterName: crx-api-key
+          type: api-key
+          token: crx-security-token
+        url: https://my.receiving.api.com/recieve
+      - securityContext:
+          tokenLocation: header
+          parameterName: crx-api-key
+          type: api-key
+          token: crx-security-token
+        url: https://my.receiving.api.com/recieve
+      events:
+      - name: transaction.added
+      - name: transaction.added
+  EventName:
+    type: object
+    required:
+    - name
+    properties:
+      name:
+        type: string
+        example: transaction.added
+        description: The name of the event to subscribe to
+        maxLength: 100
+    example:
+      name: transaction.added
+  Target:
+    type: object
+    required:
+    - url
+    properties:
+      url:
+        type: string
+        example: https://my.receiving.api.com/recieve
+        description: The URL of the endpoint to call when an event occurs.  Must be over HTTPS
+        maxLength: 500
+      securityContext:
+        $ref: '#/definitions/SecurityContext'
+    example:
+      securityContext:
+        tokenLocation: header
+        parameterName: crx-api-key
+        type: api-key
+        token: crx-security-token
+      url: https://my.receiving.api.com/recieve
+  SecurityContext:
+    type: object
+    properties:
+      type:
+        type: string
+        example: api-key
+        description: The type of security used to authenticate with the target
+        maxLength: 10
+        enum:
+        - basic
+        - api-key
+        - oauth2
+      parameterName:
+        type: string
+        example: crx-api-key
+        description: The name of the security token field to include in the POST
+        maxLength: 100
+      token:
+        type: string
+        example: crx-security-token
+        description: The token to send in the POST
+        maxLength: 250
+      tokenLocation:
+        type: string
+        example: header
+        description: Include the security token in the header or in the body
+        maxLength: 20
+        default: header
+    example:
+      tokenLocation: header
+      parameterName: crx-api-key
+      type: api-key
+      token: crx-security-token
+  BasicAuth:
+    type: object
+    required:
+    - password
+    - username
+    properties:
+      username:
+        type: string
+        example: crx-username
+        maxLength: 250
+      password:
+        type: string
+        example: crx-password
+        maxLength: 250
+      parameterName:
+        type: string
+        example: crx-api-key
+        description: The name of the security token field to include in the POST.
+        maxLength: 100
+        default: Authentication
+      tokenLocation:
+        type: string
+        example: header
+        description: Include the security token in the header or in the body
+        default: header
+  ApiKey:
+    type: object
+    required:
+    - parameterName
+    - token
+    properties:
+      parameterName:
+        type: string
+        example: crx-api-key
+        description: The name of the security token field to include in the POST
+        maxLength: 100
+      token:
+        type: string
+        description: The token to send in the POST
+        maxLength: 250
+      tokenLocation:
+        type: string
+        example: header
+        description: Include the security token in the header or in the body
+        default: header
+  Oauth2:
+    type: object
+    required:
+    - authenticationUrl
+    - clientId
+    - clientSecret
+    - grantType
+    properties:
+      authenticationUrl:
+        type: string
+        maxLength: 500
+      clientId:
+        type: string
+        maxLength: 250
+      clientSecret:
+        type: string
+        maxLength: 250
+      grantType:
+        type: string
+        example: client_credentials
+        maxLength: 50
+      scopes:
+        type: string
+        maxLength: 250
+      parameterName:
+        type: string
+        example: crx-api-key
+        description: The name of the security token field to include in the POST.
+        maxLength: 100
+        default: Authentication
+      tokenLocation:
+        type: string
+        example: header
+        description: Include the security token in the header or in the body
+        default: header
+  Batch:
+    type: object
+    required:
+    - partnerId
+    - size
+    - timestamp
+    - transactions
+    properties:
+      partnerId:
+        type: string
+        example: "23424"
+        description: Unique batch id generated for each response
+        maxLength: 32
+      size:
+        type: number
+        example: 10.0
+        description: Number of transactions for the batch
+        minimum: 1
+        maximum: 100
+      timestamp:
+        type: string
+        format: date-time
+        example: 2018-01-15T15:53:00
+        description: Date time of the batch in ISO 8601 Notation
+      transactions:
+        type: array
+        items:
+          $ref: '#/definitions/Transaction'
+        maxItems: 100
+    example:
+      size: 10.0
+      partnerId: "23424"
+      transactions:
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      - tranId: "1053450477"
+        tranCodeInternal: "2040"
+        systemTraceAuditNumber: systemTraceAuditNumber
+        tranLifeCycleUniqueId: "1053450477"
+        messageTypeIdentifier: "0100"
+        pinExist: false
+        retrievalReferenceNumber: retrievalReferenceNumber
+        tranRef: tranRef
+        merchantState: merchantState
+        productName: FirstViewTestProduct
+        tranStatus: Transaction posted successfully
+        responseCode: responseCode
+        availableBalance: 206.12
+        merchantName: merchantName
+        transmissionDateTime: 2018-01-15T15:53:00
+        tranTime: 2018-01-15T15:53:00
+        tranSource: NonMonetary
+        cardNumberLast4: "7187"
+        merchantId: merchantId
+        tranIndicator: Debit
+        tranDescription: Membership Fee
+        cardBalance: 206.12
+        outstgAuthAmount: 0.0
+        merchantCountry: merchantCountry
+        merchantType: merchantType
+        cardStatus: cardStatus
+        memberId: memberId
+        tranRequestedAmount: 206.12
+        productId: "50475"
+        merchantCity: merchantCity
+        cardAcceptorTerminalId: cardAcceptorTerminalId
+        cardExpDate: "112020"
+        accountNumber: "2000000001414867"
+        tranCodeExternal: "40"
+        rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        tranCardExpDate: "112020"
+        cardAcceptorIdCode: cardAcceptorIdCode
+        tranRevTgt: tranRevTgt
+        tranAmount: 4.95
+      timestamp: 2018-01-15T15:53:00
+  BatchResponse:
+    type: object
+    properties:
+      batchPartnerId:
+        type: string
+        example: "23424"
+        description: Unique batch id generated for each response
+        maxLength: 32
+      feedId:
+        type: string
+        example: CRXEnbrel6412
+        description: Id of the feed the batch relates too
+        maxLength: 32
+      totalTransactions:
+        type: integer
+        example: 10
+      processDate:
+        type: string
+        format: date-time
+        example: 2018-01-15T15:53:00
+        description: Date time when the batch was processed in ISO 8601 Notation
+    example:
+      totalTransactions: 10
+      batchPartnerId: "23424"
+      feedId: CRXEnbrel6412
+      processDate: 2018-01-15T15:53:00
+  Transaction:
+    type: object
+    required:
+    - accountNumber
+    - cardNumberLast4
+    - productId
+    - productName
+    - rtfReferenceNumber
+    - tranAmount
+    - tranId
+    - tranSource
+    - tranStatus
+    - tranTime
+    properties:
+      rtfReferenceNumber:
+        type: string
+        format: Guid
+        example: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        description: Unique ID for every transaction from the batch
+      accountNumber:
+        type: string
+        example: "2000000001414867"
+        description: Card unique account number
+        maxLength: 16
+      cardNumberLast4:
+        type: string
+        example: "7187"
+        maxLength: 4
+        pattern: \d{4}
+      productId:
+        type: string
+        example: "50475"
+        maxLength: 16
+      productName:
+        type: string
+        example: FirstViewTestProduct
+        maxLength: 64
+      tranId:
+        type: string
+        example: "1053450477"
+        maxLength: 16
+      tranLifeCycleUniqueId:
+        type: string
+        example: "1053450477"
+        description: Transaction lifecycle id throughout the life of the transaction, including preauth, auth and a reversal
+        maxLength: 16
+      tranRef:
+        type: string
+        description: Originator's tran id for any generated transactions
+        maxLength: 16
+      tranRevTgt:
+        type: string
+        description: Original transaction id for reversals
+        maxLength: 16
+      tranSource:
+        type: string
+        example: NonMonetary
+        description: |
+          Options:
+            * `Pre-Authorization` - All pre-authorizations are originated by MC/Visa network. These transactions will NOT impact the card balance unless the system receives a matching authorization transaction at a later point of time. If the transaction is approved in the system, it will “hold” the transaction amount and reflects on the available balance of the account (i.e. Available balance = Current balance – Outstanding Auth amount).
+            * `Authorization` - All authorizations are originated by MC/Visa network. These transactions are considered as financial transactions, and reflects card balance when the transaction is approved.
+            * `API` - All financial transactions originated by FV APIs, including the transactions from GreenDot & Western Union (when the client is integrated with GD & WU)
+            * `ACH` - All transactions originated from Automated Clearing House via FV’s sponsored bank (available only when the client is integrated with ACH module)
+            * `NonMonetary` - All generated or trigger transactions such as fee, manual, etc
+        maxLength: 32
+        enum:
+        - Pre-Authorization
+        - Authorization
+        - API
+        - ACH
+        - NonMonetary
+      tranTime:
+        type: string
+        format: date-time
+        example: 2018-01-15T15:53:00
+        description: Transaction date time in ISO 8601 Notation
+      transmissionDateTime:
+        type: string
+        format: date-time
+        example: 2018-01-15T15:53:00
+        description: Local date time during the transaction in ISO 8601 Notation
+      tranStatus:
+        type: string
+        example: Transaction posted successfully
+        description: Describes whether the transaction is successful or not
+        maxLength: 64
+      tranAmount:
+        type: number
+        format: currency
+        example: 4.95
+      tranCodeInternal:
+        type: string
+        example: "2040"
+        description: Transaction code internal to FirstView
+        maxLength: 16
+      tranCodeExternal:
+        type: string
+        example: "40"
+        description: Transaction code external - shared with the client
+        maxLength: 16
+      tranDescription:
+        type: string
+        example: Membership Fee
+        maxLength: 64
+      tranIndicator:
+        type: string
+        example: Debit
+        description: Describes whether transaction is a Debit, or Credit
+        maxLength: 8
+      responseCode:
+        type: string
+        description: Transaction response code. Available only on n/w transactions.
+        maxLength: 4
+      cardBalance:
+        type: number
+        format: currency
+        example: 206.12
+        description: Card balance after the transaction
+      outstgAuthAmount:
+        type: number
+        format: currency
+        example: 0.0
+        description: Auth holding amount after the transaction. Available only on pre-auth transactions
+      availableBalance:
+        type: number
+        format: currency
+        example: 206.12
+        description: Available balance on the card. Available balance = currentbalance – outstgauthamount
+      messageTypeIdentifier:
+        type: string
+        example: "0100"
+        description: Indicates whether transaction is a pre-auth, auth or reversal. Available in network transactions. 0100,0120,0121 are pre-authorizations. 0200,0220,0221 authorizations & 0420,0421 represent the reversals
+        maxLength: 4
+        enum:
+        - "64"
+        - "80"
+        - "81"
+        - "128"
+        - "144"
+        - "145"
+        - "272"
+        - "273"
+      pinExist:
+        type: boolean
+        example: false
+        description: Indicator whether the transaction is pin based. Applicable for n/w transactions.
+      merchantId:
+        type: string
+        description: Merchant Id.
+        maxLength: 32
+      merchantType:
+        type: string
+        description: Merchant category code. Available only on n/w transactions
+        maxLength: 4
+      merchantName:
+        type: string
+        description: Merchant name where the transaction occured
+        maxLength: 32
+      merchantCity:
+        type: string
+        description: Merchant City where the transaction occured
+        maxLength: 32
+      merchantState:
+        type: string
+        description: Merchant State where the transaction occured
+        maxLength: 16
+      merchantCountry:
+        type: string
+        description: Merchant Country where the transaction occured
+        maxLength: 16
+      cardAcceptorIdCode:
+        type: string
+        maxLength: 16
+      cardAcceptorTerminalId:
+        type: string
+        maxLength: 16
+      retrievalReferenceNumber:
+        type: string
+        maxLength: 16
+      systemTraceAuditNumber:
+        type: string
+        maxLength: 16
+      memberId:
+        type: string
+        description: Member ID of the account/card
+        maxLength: 16
+      cardStatus:
+        type: string
+        description: Status of the Account
+        maxLength: 32
+      cardExpDate:
+        type: string
+        example: "112020"
+        description: Card expiration date(MMYYYY)
+        maxLength: 6
+        pattern: \d{6}
+      tranCardExpDate:
+        type: string
+        example: "112020"
+        description: Card expiration date entered when the transaction is initiated(MMYYYY)
+        maxLength: 6
+        pattern: \d{6}
+      tranRequestedAmount:
+        type: number
+        format: currency
+        example: 206.12
+        description: Transaction original amount, available only on partially approved transactions
+    example:
+      tranId: "1053450477"
+      tranCodeInternal: "2040"
+      systemTraceAuditNumber: systemTraceAuditNumber
+      tranLifeCycleUniqueId: "1053450477"
+      messageTypeIdentifier: "0100"
+      pinExist: false
+      retrievalReferenceNumber: retrievalReferenceNumber
+      tranRef: tranRef
+      merchantState: merchantState
+      productName: FirstViewTestProduct
+      tranStatus: Transaction posted successfully
+      responseCode: responseCode
+      availableBalance: 206.12
+      merchantName: merchantName
+      transmissionDateTime: 2018-01-15T15:53:00
+      tranTime: 2018-01-15T15:53:00
+      tranSource: NonMonetary
+      cardNumberLast4: "7187"
+      merchantId: merchantId
+      tranIndicator: Debit
+      tranDescription: Membership Fee
+      cardBalance: 206.12
+      outstgAuthAmount: 0.0
+      merchantCountry: merchantCountry
+      merchantType: merchantType
+      cardStatus: cardStatus
+      memberId: memberId
+      tranRequestedAmount: 206.12
+      productId: "50475"
+      merchantCity: merchantCity
+      cardAcceptorTerminalId: cardAcceptorTerminalId
+      cardExpDate: "112020"
+      accountNumber: "2000000001414867"
+      tranCodeExternal: "40"
+      rtfReferenceNumber: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+      tranCardExpDate: "112020"
+      cardAcceptorIdCode: cardAcceptorIdCode
+      tranRevTgt: tranRevTgt
+      tranAmount: 4.95
+  Product:
+    type: object
+    properties:
+      partnerId:
+        type: string
+        maxLength: 16
+      name:
+        type: string
+        example: CRX_Enbrel_ChargeCardMC
+        maxLength: 64
+    example:
+      name: CRX_Enbrel_ChargeCardMC
+      partnerId: partnerId
+  Merchant:
+    type: object
+    properties:
+      id:
+        type: string
+        maxLength: 32
+      name:
+        type: string
+        description: Merchant name where the transaction occured
+        maxLength: 32
+      categoryCode:
+        type: string
+        description: Merchant category code. Available only on n/w transactions
+        maxLength: 4
+      city:
+        type: string
+        description: Merchant City where the transaction occured
+        maxLength: 32
+      state:
+        type: string
+        description: Merchant State where the transaction occured
+        maxLength: 16
+      country:
+        type: string
+        description: Merchant Country where the transaction occured
+        maxLength: 16
+    example:
+      country: country
+      city: city
+      name: name
+      id: id
+      categoryCode: categoryCode
+      state: state
+  Account:
+    type: object
+    properties:
+      accountNumber:
+        type: string
+        example: "2000000001414867"
+        description: Card unique account number
+        maxLength: 16
+      cardNumberLast4:
+        type: string
+        example: "7187"
+        maxLength: 4
+        pattern: \d{4}
+      memberId:
+        type: string
+        description: Member ID of the account/card
+        maxLength: 16
+      status:
+        type: string
+        description: Status of the account
+        maxLength: 32
+      expirationDate:
+        type: string
+        example: "112020"
+        description: The expiration date of the debit card
+        maxLength: 6
+        pattern: \d{6}
+    example:
+      cardNumberLast4: "7187"
+      accountNumber: "2000000001414867"
+      memberId: memberId
+      status: status
+      expirationDate: "112020"
+  Terminal:
+    type: object
+    properties:
+      code:
+        type: string
+        maxLength: 16
+      id:
+        type: string
+        maxLength: 16
+    example:
+      code: code
+      id: id
+  EventTransaction:
+    type: object
+    properties:
+      uid:
+        type: string
+        format: guid
+        example: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+        readOnly: true
+      partnerId:
+        type: string
+        example: "1053450477"
+        maxLength: 16
+      partnerReferenceId:
+        type: string
+        maxLength: 16
+      lifeCycleId:
+        type: string
+        maxLength: 16
+      reversalTargetId:
+        type: string
+        maxLength: 16
+      source:
+        type: string
+        maxLength: 32
+      timestamp:
+        type: string
+        format: date-time
+        example: 2018-01-15T15:53:00
+        description: Transaction date time in ISO 8601 Notation
+      transmissionTimestamp:
+        type: string
+        format: date-time
+        example: 2018-01-15T15:53:00
+        description: Local date time during the transaction in ISO 8601 Notation
+      status:
+        type: string
+        example: Transaction posted successfully
+        description: Describes whether the transaction is successful or not
+        maxLength: 64
+      amount:
+        type: number
+        format: currency
+        example: 4.95
+      requestedAmount:
+        type: number
+        format: currency
+        example: 4.95
+      internalCode:
+        type: string
+        example: "2040"
+        description: Transaction code internal to FirstView
+        maxLength: 16
+      externalCode:
+        type: string
+        example: "40"
+        description: Transaction code external - shared with the client
+        maxLength: 16
+      description:
+        type: string
+        example: 40 = Signature (POS) Purchase
+        maxLength: 64
+      indicator:
+        type: string
+        example: Debit
+        description: Describes whether transaction is a Debit, or Credit
+        maxLength: 8
+      responseCode:
+        type: string
+        description: Transaction response code. Available only on n/w transactions.
+        maxLength: 4
+      typeCode:
+        type: string
+        example: "0100"
+        description: Indicates whether transaction is a pre-auth, auth or reversal. Available in network transactions. 0100,0120,0121 are pre-authorizations. 0200,0220,0221 authorizations & 0420,0421 represent the reversals
+        maxLength: 4
+        enum:
+        - "64"
+        - "80"
+        - "81"
+        - "128"
+        - "144"
+        - "145"
+        - "272"
+        - "273"
+      cardBalance:
+        type: number
+        format: currency
+        example: 206.12
+        description: Card balance after the transaction
+      outstandingAuthorizationAmount:
+        type: number
+        format: currency
+        example: 0.0
+        description: Auth holding amount after the transaction. Available only on pre-auth transactions
+      availableBalance:
+        type: number
+        format: currency
+        example: 206.12
+        description: Available balance on the card. Available balance = currentbalance – outstgauthamount
+      pinExist:
+        type: boolean
+        example: false
+        description: Indicator whether the transaction is pin based. Applicable for n/w transactions.
+      account:
+        $ref: '#/definitions/Account'
+      merchant:
+        $ref: '#/definitions/Merchant'
+      product:
+        $ref: '#/definitions/Product'
+      terminal:
+        $ref: '#/definitions/Terminal'
+      expirationDateEntered:
+        type: string
+        example: "112020"
+        description: The expiration date of the debit card that was entered during the transaction
+        maxLength: 6
+        pattern: \d{6}
+      retrievalReferenceNumber:
+        type: string
+        maxLength: 16
+      systemTraceAuditNumber:
+        type: string
+        maxLength: 16
+    example:
+      indicator: Debit
+      systemTraceAuditNumber: systemTraceAuditNumber
+      partnerReferenceId: partnerReferenceId
+      externalCode: "40"
+      reversalTargetId: reversalTargetId
+      transmissionTimestamp: 2018-01-15T15:53:00
+      description: 40 = Signature (POS) Purchase
+      pinExist: false
+      source: source
+      retrievalReferenceNumber: retrievalReferenceNumber
+      responseCode: responseCode
+      availableBalance: 206.12
+      uid: 07c3e2f4-d726-4e55-b860-2b4ab9243535
+      lifeCycleId: lifeCycleId
+      cardBalance: 206.12
+      outstandingAuthorizationAmount: 0.0
+      timestamp: 2018-01-15T15:53:00
+      amount: 4.95
+      product:
+        name: CRX_Enbrel_ChargeCardMC
+        partnerId: partnerId
+      merchant:
+        country: country
+        city: city
+        name: name
+        id: id
+        categoryCode: categoryCode
+        state: state
+      terminal:
+        code: code
+        id: id
+      typeCode: "0100"
+      expirationDateEntered: "112020"
+      requestedAmount: 4.95
+      partnerId: "1053450477"
+      internalCode: "2040"
+      account:
+        cardNumberLast4: "7187"
+        accountNumber: "2000000001414867"
+        memberId: memberId
+        status: status
+        expirationDate: "112020"
+      status: Transaction posted successfully
+responses:
+  NotFound:
+    description: The specified resource was not found
+    schema:
+      $ref: '#/definitions/Error'
+    headers:
+      crx-api-tracking-id:
+        type: string
+        format: guid
+        description: Tracking Id to assist in tracking responses from the API. Can be used to assist in troubleshooting issues.
+  Unauthorized:
+    description: Unauthorized
+    schema:
+      $ref: '#/definitions/Error'
+    headers:
+      crx-api-tracking-id:
+        type: string
+        format: guid
+        description: Tracking Id to assist in tracking responses from the API. Can be used to assist in troubleshooting issues.
+  Forbidden:
+    description: Forbidden
+    schema:
+      $ref: '#/definitions/Error'
+    headers:
+      crx-api-tracking-id:
+        type: string
+        format: guid
+        description: Tracking Id to assist in tracking responses from the API. Can be used to assist in troubleshooting issues.
+  BadRequest:
+    description: Bad Request
+    schema:
+      $ref: '#/definitions/Error'
+    headers:
+      crx-api-tracking-id:
+        type: string
+        format: guid
+        description: Tracking Id to assist in tracking responses from the API. Can be used to assist in troubleshooting issues.
+  InternalServerError:
+    description: Internal Server Error
+    schema:
+      $ref: '#/definitions/Error'
+    headers:
+      crx-api-tracking-id:
+        type: string
+        format: guid
+        description: Tracking Id to assist in tracking responses from the API. Can be used to assist in troubleshooting issues.
+x-aws-api-id: ykub9gdtk8
