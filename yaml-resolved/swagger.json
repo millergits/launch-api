@@ -4,6 +4,8 @@ info:
   description: The API Description with markdown
   version: 1.0.0
   title: Debit Card Transaction API
+  x-logo:
+    url: https://docs.docker.com/images/logo-docker-main.png
 host: virtserver.swaggerhub.com
 basePath: /itmiller/webhooks/1.0.0
 tags:
